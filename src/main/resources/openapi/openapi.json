@@ -91,6 +91,66 @@
           }
         }
       }
+    },
+    "/api/chat/rooms/{roomId}/messages": {
+      "get": {
+        "summary": "List recent chat messages for a room",
+        "tags": ["Chat"],
+        "parameters": [
+          {
+            "name": "roomId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recent room messages",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChatMessage"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ws/chat/{roomId}": {
+      "get": {
+        "summary": "Connect to a chat room WebSocket",
+        "tags": ["Chat"],
+        "parameters": [
+          {
+            "name": "roomId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sender",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "101": {
+            "description": "WebSocket connection established"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -126,6 +186,29 @@
             "type": "string"
           },
           "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ChatMessage": {
+        "type": "object",
+        "required": ["id", "roomId", "sender", "text", "sentAt"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "roomId": {
+            "type": "string"
+          },
+          "sender": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          },
+          "sentAt": {
             "type": "string",
             "format": "date-time"
           }

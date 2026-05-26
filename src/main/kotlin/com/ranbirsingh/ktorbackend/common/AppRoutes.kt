@@ -7,6 +7,10 @@ object AppRoutes {
     const val Liveness = "/livez"
     const val Readiness = "/readyz"
     const val OpenApiJson = "/openapi.json"
+    const val ChatWebSocket = "/ws/chat/{roomId}"
+
+    fun chatWebSocket(roomId: String, sender: String): String =
+        "/ws/chat/$roomId?sender=$sender"
 }
 
 @Serializable
@@ -19,3 +23,9 @@ class UsersRoute {
         val id: String,
     )
 }
+
+@Serializable
+@Resource("/api/chat/rooms/{roomId}/messages")
+data class ChatMessagesRoute(
+    val roomId: String,
+)

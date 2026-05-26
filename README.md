@@ -34,6 +34,8 @@ Swagger UI:   http://localhost:8080/openapi
 OpenAPI JSON: http://localhost:8080/openapi.json
 Liveness:     http://localhost:8080/livez
 Readiness:    http://localhost:8080/readyz
+Chat WS:      ws://localhost:8080/ws/chat/general?sender=ranbir
+Chat history: http://localhost:8080/api/chat/rooms/general/messages
 ```
 
 ## Test
