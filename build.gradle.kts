@@ -1,7 +1,8 @@
 plugins {
     application
-    kotlin("jvm") version "2.2.21"
-    kotlin("plugin.serialization") version "2.2.21"
+    kotlin("jvm") version "2.3.0"
+    kotlin("plugin.serialization") version "2.3.0"
+    id("dev.zacsweers.metro") version "1.1.1"
 }
 
 group = "com.ranbirsingh"
@@ -15,7 +16,7 @@ application {
 }
 
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(21)
 }
 
 dependencies {

@@ -1,7 +1,12 @@
 package com.ranbirsingh.ktorbackend.users
 
+import com.ranbirsingh.ktorbackend.di.AppScope
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
 import java.util.UUID
 
+@Inject
+@SingleIn(AppScope::class)
 class UserService(
     private val users: UserRepository,
 ) {

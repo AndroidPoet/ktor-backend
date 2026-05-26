@@ -1,5 +1,8 @@
 package com.ranbirsingh.ktorbackend.chat
 
+import com.ranbirsingh.ktorbackend.di.AppScope
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
 import org.jetbrains.exposed.v1.core.SortOrder
 import org.jetbrains.exposed.v1.core.Table
 import org.jetbrains.exposed.v1.core.eq
@@ -12,6 +15,8 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 import java.time.LocalDateTime
 import java.util.UUID
 
+@Inject
+@SingleIn(AppScope::class)
 class PostgresChatRepository(
     private val database: Database,
 ) : ChatRepository {

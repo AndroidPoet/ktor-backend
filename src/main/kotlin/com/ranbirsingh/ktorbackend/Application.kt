@@ -4,13 +4,10 @@ import com.ranbirsingh.ktorbackend.common.AppRoutes
 import com.ranbirsingh.ktorbackend.common.configureErrors
 import com.ranbirsingh.ktorbackend.common.configureObservability
 import com.ranbirsingh.ktorbackend.config.AppConfig
-import com.ranbirsingh.ktorbackend.db.DatabaseFactory
-import com.ranbirsingh.ktorbackend.chat.ChatRoomHub
 import com.ranbirsingh.ktorbackend.chat.chatRoutes
-import com.ranbirsingh.ktorbackend.chat.PostgresChatRepository
-import com.ranbirsingh.ktorbackend.users.PostgresUserRepository
-import com.ranbirsingh.ktorbackend.users.UserService
+import com.ranbirsingh.ktorbackend.di.AppGraph
 import com.ranbirsingh.ktorbackend.users.userRoutes
+import dev.zacsweers.metro.createGraphFactory
 import io.ktor.server.application.ApplicationStopped
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
@@ -35,9 +32,8 @@ fun main() {
 }
 
 fun Application.module(config: AppConfig = AppConfig.fromEnvironment()) {
-    val database = DatabaseFactory.connect(config.database)
-    val userService = UserService(PostgresUserRepository(database.database))
-    val chat = ChatRoomHub(PostgresChatRepository(database.database))
+    val graph = createGraphFactory<AppGraph.Factory>().create(config)
+    val database = graph.database
 
     install(DefaultHeaders)
     install(Resources)
@@ -78,8 +74,8 @@ fun Application.module(config: AppConfig = AppConfig.fromEnvironment()) {
                 io.ktor.http.ContentType.Application.Json,
             )
         }
-        userRoutes(userService)
-        chatRoutes(chat)
+        userRoutes(graph.userService)
+        chatRoutes(graph.chat)
     }
 
     monitor.subscribe(ApplicationStopped) {

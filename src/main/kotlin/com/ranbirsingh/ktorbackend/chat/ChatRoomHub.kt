@@ -1,10 +1,15 @@
 package com.ranbirsingh.ktorbackend.chat
 
+import com.ranbirsingh.ktorbackend.di.AppScope
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
 import io.ktor.websocket.Frame
 import io.ktor.websocket.WebSocketSession
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
+@Inject
+@SingleIn(AppScope::class)
 class ChatRoomHub(
     private val repository: ChatRepository,
 ) {

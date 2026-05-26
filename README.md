@@ -26,7 +26,7 @@ This is not a framework wrapper or a generated sample. The goal is to keep the c
 
 | Area | Choice |
 | --- | --- |
-| Language | Kotlin `2.2.21` |
+| Language | Kotlin `2.3.0` |
 | Server | Ktor `3.5.0` |
 | JSON | kotlinx.serialization |
 | Database | PostgreSQL |
@@ -37,6 +37,14 @@ This is not a framework wrapper or a generated sample. The goal is to keep the c
 | Route typing | Ktor Resources |
 | Realtime | Ktor WebSockets |
 | Build | Gradle Kotlin DSL |
+| Dependency injection | Metro `1.1.1` |
+
+## Requirements
+
+- JDK `21`
+- Docker, only if you want local PostgreSQL through `compose.yml`
+
+Metro `1.1.1` requires the build to run on Java 21 and Kotlin `2.3.0+`.
 
 ## Architecture
 
@@ -59,6 +67,9 @@ src/main/kotlin/com/ranbirsingh/ktorbackend
 
   db/
     DatabaseFactory.kt
+
+  di/
+    AppGraph.kt           Metro dependency graph
 
   users/
     UserRoutes.kt
@@ -298,6 +309,18 @@ DATABASE_POOL_SIZE=10 \
 ```
 
 ## Local Development
+
+Check Java:
+
+```bash
+java -version
+```
+
+This project expects Java 21. If multiple JDKs are installed on macOS:
+
+```bash
+export JAVA_HOME=$(/usr/libexec/java_home -v 21)
+```
 
 Start PostgreSQL:
 
