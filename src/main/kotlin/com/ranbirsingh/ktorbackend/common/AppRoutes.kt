@@ -8,9 +8,11 @@ object AppRoutes {
     const val Readiness = "/readyz"
     const val OpenApiJson = "/openapi.json"
     const val ChatWebSocket = "/ws/chat/{roomId}"
+    const val RoomIdParam = "roomId"
+    const val SenderQuery = "sender"
 
     fun chatWebSocket(roomId: String, sender: String): String =
-        "/ws/chat/$roomId?sender=$sender"
+        "/ws/chat/$roomId?$SenderQuery=$sender"
 }
 
 @Serializable

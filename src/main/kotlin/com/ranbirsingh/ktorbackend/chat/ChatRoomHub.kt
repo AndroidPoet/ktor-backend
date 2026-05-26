@@ -6,7 +6,7 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
 class ChatRoomHub(
-    private val maxHistoryPerRoom: Int = 100,
+    private val repository: ChatRepository,
 ) {
     private val lock = Mutex()
     private val rooms = mutableMapOf<String, ChatRoom>()
@@ -24,18 +24,12 @@ class ChatRoomHub(
     }
 
     suspend fun history(roomId: String): List<ChatMessage> =
-        lock.withLock {
-            room(roomId).messages.toList()
-        }
+        repository.recentMessages(roomId)
 
     suspend fun publish(message: NewChatMessage): ChatMessage {
-        val saved = message.toMessage()
+        val saved = repository.save(message.toMessage())
         val sessions = lock.withLock {
             val room = room(message.roomId)
-            room.messages += saved
-            if (room.messages.size > maxHistoryPerRoom) {
-                room.messages.removeFirst()
-            }
             room.sessions.toList()
         }
 
@@ -53,5 +47,4 @@ class ChatRoomHub(
 
 private class ChatRoom {
     val sessions = mutableSetOf<WebSocketSession>()
-    val messages = ArrayDeque<ChatMessage>()
 }

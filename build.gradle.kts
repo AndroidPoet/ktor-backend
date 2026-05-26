@@ -44,6 +44,7 @@ dependencies {
     testImplementation("io.ktor:ktor-client-resources:$ktorVersion")
     testImplementation("io.ktor:ktor-client-websockets:$ktorVersion")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
     testImplementation("org.testcontainers:junit-jupiter:1.21.3")
     testImplementation("org.testcontainers:postgresql:1.21.3")
 }

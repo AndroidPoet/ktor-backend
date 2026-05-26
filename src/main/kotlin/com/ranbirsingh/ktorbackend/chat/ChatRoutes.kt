@@ -16,9 +16,9 @@ fun Route.chatRoutes(chat: ChatRoomHub) {
     }
 
     webSocket(AppRoutes.ChatWebSocket) {
-        val roomId = call.parameters["roomId"]?.takeIf { it.isNotBlank() }
+        val roomId = call.parameters[AppRoutes.RoomIdParam]?.takeIf { it.isNotBlank() }
             ?: throw ValidationException(mapOf("roomId" to "Room ID is required"))
-        val sender = call.request.queryParameters["sender"]?.takeIf { it.isNotBlank() }
+        val sender = call.request.queryParameters[AppRoutes.SenderQuery]?.takeIf { it.isNotBlank() }
             ?: throw ValidationException(mapOf("sender" to "Sender is required"))
 
         chat.join(roomId, this)

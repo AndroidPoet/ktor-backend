@@ -25,7 +25,8 @@ import kotlin.test.assertEquals
 class ChatRoutesTest {
     @Test
     fun test_chatWebSocket_whenMessageIsSent_broadcastsMessage() = testApplication {
-        val chat = ChatRoomHub()
+        val repository = FakeChatRepository()
+        val chat = ChatRoomHub(repository)
         application {
             install(ServerResources)
             install(ServerWebSockets)
@@ -51,8 +52,9 @@ class ChatRoutesTest {
 
     @Test
     fun test_history_whenRoomHasMessages_returnsMessages() = testApplication {
-        val chat = ChatRoomHub()
-        chat.publish(NewChatMessage(roomId = "general", sender = "founder", text = "hello"))
+        val repository = FakeChatRepository()
+        repository.save(NewChatMessage(roomId = "general", sender = "founder", text = "hello").toMessage())
+        val chat = ChatRoomHub(repository)
         application {
             install(ServerResources)
             install(ServerWebSockets)
@@ -73,5 +75,19 @@ class ChatRoutesTest {
 
         assertEquals(HttpStatusCode.OK, response.status)
         assertEquals("hello", messages.single().text)
+    }
+
+    private class FakeChatRepository : ChatRepository {
+        private val messages = mutableListOf<ChatMessage>()
+
+        override fun save(message: ChatMessage): ChatMessage {
+            messages += message
+            return message
+        }
+
+        override fun recentMessages(roomId: String, limit: Int): List<ChatMessage> =
+            messages
+                .filter { it.roomId == roomId }
+                .takeLast(limit)
     }
 }

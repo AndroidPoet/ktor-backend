@@ -7,7 +7,8 @@ import com.ranbirsingh.ktorbackend.config.AppConfig
 import com.ranbirsingh.ktorbackend.db.DatabaseFactory
 import com.ranbirsingh.ktorbackend.chat.ChatRoomHub
 import com.ranbirsingh.ktorbackend.chat.chatRoutes
-import com.ranbirsingh.ktorbackend.users.SqlUserRepository
+import com.ranbirsingh.ktorbackend.chat.PostgresChatRepository
+import com.ranbirsingh.ktorbackend.users.PostgresUserRepository
 import com.ranbirsingh.ktorbackend.users.UserService
 import com.ranbirsingh.ktorbackend.users.userRoutes
 import io.ktor.server.application.ApplicationStopped
@@ -35,8 +36,8 @@ fun main() {
 
 fun Application.module(config: AppConfig = AppConfig.fromEnvironment()) {
     val database = DatabaseFactory.connect(config.database)
-    val userService = UserService(SqlUserRepository(database.database))
-    val chat = ChatRoomHub()
+    val userService = UserService(PostgresUserRepository(database.database))
+    val chat = ChatRoomHub(PostgresChatRepository(database.database))
 
     install(DefaultHeaders)
     install(Resources)
